@@ -1,13 +1,5 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
+ 
 <template>
-  <!--
-    This example requires updating your template:
-
-    ```
-    <html class="h-full bg-gray-100">
-    <body class="h-full">
-    ```
-  -->
   <div class="min-h-full">
     <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,7 +81,7 @@
                       focus:outline-none
                     "
                   >
-                    <MenuItem v-slot="{active}">
+                    <!-- <MenuItem v-slot="{ active }">
                       <a
                         @click="logout"
                         :class="[
@@ -97,7 +89,7 @@
                         ]"
                       >Sign out</a
                       >
-                    </MenuItem>
+                    </MenuItem> -->
                   </MenuItems>
                 </transition>
               </Menu>
@@ -184,7 +176,7 @@
       </DisclosurePanel>
     </Disclosure>
 
-    <router-view :key="$route.path"></router-view>
+    <!-- <router-view :key="$route.path"></router-view> -->
   </div>
 </template>
 
@@ -198,7 +190,7 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
-import {BellIcon, MenuIcon, XIcon} from "@heroicons/vue/24/solid";
+import {BellIcon, MenuIcon, XIcon} from "@heroicons/vue/outline";
 import {useStore} from "vuex";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
