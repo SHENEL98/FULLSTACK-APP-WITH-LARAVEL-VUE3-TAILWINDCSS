@@ -7,7 +7,9 @@
         </h1>
       </div>
     </template>
-    <pre>{{ model }}</pre>
+    <!-- <pre>{{ model }}</pre> -->
+    <pre>{{ model.questions.length }}</pre>
+
     <form @submit.prevent="saveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <!-- survey field -->
@@ -137,7 +139,7 @@
             </svg>
             Add Question</button>
         </h3>
-        <div v-if="!model.questions.length" class="text-center text-gray-600">
+        <div v-if="! model.questions.length" class="text-center text-gray-600">
           You don't have any questions created yet.
         </div>
         <div v-for="(question, index) in model.questions" :key="question.id">
@@ -179,6 +181,7 @@
 
 <script setup>
 import PageComponents from '../components/PageComponents.vue';
+import QuestionEditor from '../components/editor/QuestionEditor.vue';
 
 import { ref } from 'vue';
 import store from '../store';
@@ -193,7 +196,7 @@ let model = ref({
   description: null,
   image: null,
   expire_date: null,
-  question: [],
+  questions: [],
 });
 
 if (route.params.id) {
