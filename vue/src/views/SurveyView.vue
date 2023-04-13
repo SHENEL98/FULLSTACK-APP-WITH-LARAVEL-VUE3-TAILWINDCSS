@@ -7,8 +7,9 @@
         </h1>
       </div>
     </template>
+    <!-- test data passing -->
     <!-- <pre>{{ model }}</pre> -->
-    <pre>{{ model.questions.length }}</pre>
+    <!-- <pre>{{ model.questions.length }}</pre> -->
 
     <form @submit.prevent="saveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -183,9 +184,10 @@
 import PageComponents from '../components/PageComponents.vue';
 import QuestionEditor from '../components/editor/QuestionEditor.vue';
 
+import {v4 as uuidv4} from "uuid";
 import { ref } from 'vue';
 import store from '../store';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'; 
 
 const route = useRoute();
 
@@ -205,6 +207,32 @@ if (route.params.id) {
   );
 }
 
+function addQuestion(index){
+  const newQuestion = {
+    id: uuidv4(),
+    type: "text",
+    question: "",
+    description:null,
+    data:{},
+  };
+
+  model.value.questions.splice(index, 0,newQuestion);
+}
+
+function deleteQuestion(question){
+  model.value.questions = model.value.questions.filter(
+    (q) => q !== question
+  );
+}
+
+function questionChange(question){
+  model.value.questions = model.value.questions.map((q) => {
+    if(q.id === question.id){
+      return JSON.parse(JSON.stringify(question)); 
+    }
+    return q;
+  });
+}
 </script>
 
 <style></style>

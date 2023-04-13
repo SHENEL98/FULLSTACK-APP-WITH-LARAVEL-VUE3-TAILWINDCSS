@@ -7,16 +7,16 @@
         <div class="flex items-center">
             <!-- Add new question -->
             <button type="button" @click="addQuestion()" class="flex items-center text-sm py-1 px-4 rounded-sm text-white
-                                                                  bg-gray-600 hover:bg-gray-700">
+                                                                      bg-gray-600 hover:bg-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                Add </button>
+                Add Question </button>
 
             <!-- Delete Question -->
             <button type="button" @click="deleteQuestion()" class="flex items-center text-sm py-1 px-4 rounded-sm text-white
-                                                                  bg-red-600 hover:bg-red-700">
+                                                                      bg-red-600 hover:bg-red-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -33,33 +33,33 @@
                 Question Text</label>
             <input type="text" :name="'question_text_' + model.data" v-model="model.question" @change="dataChange"
                 :id="'question_text_' + model.data" class="
-                                                      mt-1
-                                                      focus:ring-indigo-500 focus:border-indigo-500
-                                                      block
-                                                      w-full
-                                                      shadow-sm
-                                                      sm:text-sm
-                                                      border-gray-300
-                                                      rounded-md
-                                                    " />
+                                                          mt-1
+                                                          focus:ring-indigo-500 focus:border-indigo-500
+                                                          block
+                                                          w-full
+                                                          shadow-sm
+                                                          sm:text-sm
+                                                          border-gray-300
+                                                          rounded-md
+                                                        " />
         </div>
         <!-- Question Type -->
         <div class="mt-3 col-span-3">
             <label for="question_type" class="block text-sm font-medium text-gray-700">Select Question Type</label>
             <select id="question_type" name="question_type" v-model="model.type" @change="typeChange" class="
-                                              mt-1
-                                              block
-                                              w-full
-                                              py-2
-                                              px-3
-                                              border border-gray-300
-                                              bg-white
-                                              rounded-md
-                                              shadow-sm
-                                              focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
-                                              sm:text-sm
-                                            ">
-                <option v-for="(type) in questionTypes" :key="type" :value="type">
+                                                  mt-1
+                                                  block
+                                                  w-full
+                                                  py-2
+                                                  px-3
+                                                  border border-gray-300
+                                                  bg-white
+                                                  rounded-md
+                                                  shadow-sm
+                                                  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+                                                  sm:text-sm
+                                                ">
+                <option v-for="type in questionTypes" :key="type" :value="type">
                     {{ upperCaseFirst(type) }}
                 </option>
             </select>
@@ -72,30 +72,33 @@
         <label :for="'question_description_' + model.id" class="block text-sm font-medium text-gray-700">Description</label>
         <textarea :name="'question_description_' + model.id" v-model="model.description" @change="dataChange"
             :id="'question_description_' + model.id" class="
-                                    mt-1
-                                    focus:ring-indigo-500 focus:border-indigo-500
-                                    block
-                                    w-full
-                                    shadow-sm
-                                    sm:text-sm
-                                    border-gray-300
-                                    rounded-md
-                                  " />
+                                        mt-1
+                                        focus:ring-indigo-500 focus:border-indigo-500
+                                        block
+                                        w-full
+                                        shadow-sm
+                                        sm:text-sm
+                                        border-gray-300
+                                        rounded-md
+                                      " />
     </div>
 
     <!-- Data -->
     <div>
         <div v-if="shouldHaveOptions()" class="mt-2">
-            <h4 class="text-sm font-semibold mb-1 flex justify-between items-center">Options
+            <div class="flex justify-between items-center">
+                <h4 class="text-sm font-semibold mb-1">
+                    Options
+                </h4>
                 <!-- Add new option -->
-                <button type="button" @click="addOption()"
-                    class="flex items-center text-xs py-1 px-2rounded-sm text-white bg-gray-600 hover:bg-gray-700">
+                <button type="button" @click="addOption()" class="flex items-center text-sm py-1 px-4 rounded-sm text-white
+                                                                      bg-gray-600 hover:bg-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    Add Question</button>
-            </h4>
+                    Add Option </button>
+            </div>
 
             <div v-if="!model.data.options.length" class="text-xs py-3 text-center text-gray-600">
                 You don't have any options defined yet.
@@ -104,19 +107,19 @@
             <div v-for="(option, index) in model.data.options" :key="option.uuid" class="flex items-center mb-1">
                 <span class="w-6 text-sm">{{ index + 1 }}.</span>
                 <input type="text" v-model="option.text" @change="dataChange" class="
-                                                shadow-sm
-                                                focus:ring-indigo-500 focus:border-indigo-500
-                                                mt-1
-                                                block
-                                                w-full
-                                                sm:text-sm
-                                                border border-gray-300
-                                                rounded-md
-                                              " />
+                                                    shadow-sm
+                                                    focus:ring-indigo-500 focus:border-indigo-500
+                                                    mt-1
+                                                    block
+                                                    w-full
+                                                    sm:text-sm
+                                                    border border-gray-300
+                                                    rounded-md
+                                                  " />
 
                 <!-- Delete Option -->
                 <button type="button" @click="removeOption(option)" class="flex items-center text-sm py-1 px-4 rounded-sm text-white
-                                                                  bg-red-600 hover:bg-red-700">
+                                                                      bg-red-600 hover:bg-red-700">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -134,6 +137,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import store from "../../store";
+import { v4 as uuidv4 } from "uuid";
 
 const props = defineProps({
     question: Object,
@@ -148,51 +152,60 @@ const model = ref(JSON.parse(JSON.stringify(props.question)));
 //get question types from vuex
 const questionTypes = computed(() => store.state.questionTypes);
 
-function upperCaseFirst(str){
+function upperCaseFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 //check if the question should have options
-function shouldHaveOptions(){
+function shouldHaveOptions() {
     return ["select", "radio", "checkbox"].includes(model.value.type);
 }
 
-function getOptions(){
+function getOptions() {
     return model.value.data.options;
 }
 
-function setOptions(){
+function setOptions() {
     model.value.data.options = options;
 }
 
-function addOption(){
-    setOptions([
-        ...getOptions(),
-        {uuid:uuidv4(), text: ""},
-    ]);
+function addOption() {
+    // setOptions([
+    //     ...getOptions(),
+    //     {uuid:uuidv4(), text: ""},
+    // ]);
+    model.value.data.options = [...model.value.data.options, { uuid: uuidv4(), text: "" }];
     dataChange();
 }
 
-function removeOption(op){
-    setOptions(getOptions().filter((opt)=> opt !== op));
+function removeOption(op) {
+    setOptions(getOptions().filter((opt) => opt !== op));
     dataChange();
 }
 
-function typeChange(){
-    if(shouldHaveOptions()){
+function typeChange() {
+    if (shouldHaveOptions()) {
         setOptions(getOptions() || []);
     }
     dataChange();
 }
 
 //emit the data change
-function dataChange(){
+function dataChange() {
     const data = JSON.parse(JSON.stringify(model.value));
-    if(!shouldHaveOptions()){
+    if (!shouldHaveOptions()) {
         delete data.data.options;
     }
+    emit("change", data);
 }
 
+function addQuestion(){
+    emit("addQuestion", props.index + 1);
+}
+
+function deleteQuestion(){
+    emit("deleteQuestion",props.question);
+}
 
 </script>
 
