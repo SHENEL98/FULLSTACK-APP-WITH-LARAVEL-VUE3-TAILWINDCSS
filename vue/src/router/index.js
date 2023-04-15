@@ -21,8 +21,8 @@ const routes =[
         children: [
             {path: '/dashboard', name: 'Dashboard', component: Dashboard},
             {path: '/survey', name: 'Surveys', component: Surveys},
-            {path: '/surveys/create', name: 'SurveyCreate', component: SurveyView},
-            {path: '/surveys/:id', name: 'SurveyView', component: SurveyView}
+            {path: '/survey/create', name: 'SurveyCreate', component: SurveyView},
+            {path: '/survey/:id', name: 'SurveyView', component: SurveyView}
 
 
         ]
