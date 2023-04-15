@@ -154,11 +154,12 @@ const store = createStore({
     actions: {
       getSurvey({commit},id){
         //make hhtp request
-        commit("setCurrentSurveyLoading",true);
+        commit("setCurrentSurveyLoading", true);
         return axiosClient
           .get(`/survey/${id}`)
           .then((res) =>{
             commit("setCurrentSurvey",res.data);
+            commit("setCurrentSurveyLoading", false);
             return res;
           })
           .catch((err) => {
@@ -174,6 +175,7 @@ const store = createStore({
             .put(`/survey/${survey.id}`,survey)
             .then((res) =>{
               commit("updateSurvey",res.data);
+              commit('setCurrentSurvey', res.data)
               return res;
             });
         }else{

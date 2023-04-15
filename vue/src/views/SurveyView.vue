@@ -11,6 +11,8 @@
     <!-- <pre>{{ model }}</pre> -->
     <!-- <pre>{{ model.questions.length }}</pre> -->
 
+     <div v-if="surveyLoading" class="flex justify-center">Loading...</div>
+
     <form @submit.prevent="saveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <!-- survey field -->
@@ -183,12 +185,15 @@ import PageComponents from '../components/PageComponents.vue';
 import QuestionEditor from '../components/editor/QuestionEditor.vue';
 
 import { v4 as uuidv4 } from "uuid";
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import store from '../store';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
+
+// Get survey loading state, which only changes when we fetch survey from backend
+const surveyLoading = computed(() => store.state.currentSurvey.loading);
 
 //Create empty survey
 let model = ref({
