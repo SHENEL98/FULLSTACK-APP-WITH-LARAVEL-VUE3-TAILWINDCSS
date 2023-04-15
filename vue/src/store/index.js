@@ -106,6 +106,7 @@ const tmpSurveys = [
         created_at: "2021-12-20 18:00:00",
         updated_at: "2021-12-20 18:00:00",
         expire_date: "2021-12-31 18:00:00",
+        questions:[]
       },
       {
         id: 3,
@@ -117,6 +118,8 @@ const tmpSurveys = [
         created_at: "2021-12-21 17:00:00",
         updated_at: "2021-12-21 17:00:00",
         expire_date: "2021-12-31 00:00:00",
+        questions:[]
+
       },
       {
         id: 4,
@@ -128,6 +131,7 @@ const tmpSurveys = [
         created_at: "2021-12-21 14:00:00",
         updated_at: "2021-12-21 14:00:00",
         expire_date: "2021-12-31 00:00:00",
+        questions:[]
       },
 ];
 
@@ -139,13 +143,31 @@ const store = createStore({
             token: sessionStorage.getItem("TOKEN"),
         },
         surveys: [...tmpSurveys],
+        currentSurvey:{
+          loading: false,
+          data: {}
+        },
         questionTypes: ["text", "select", "radio","checkbox", "textarea"],
 
     },
     getters: {},
     actions: {
+      getSurvey({commit},id){
+        //make hhtp request
+        commit("setCurrentSurveyLoading",true);
+        return axiosClient
+          .get(`/survey/${id}`)
+          .then((res) =>{
+            commit("setCurrentSurvey",res.data);
+            return res;
+          })
+          .catch((err) => {
+            commit("setCurrentSurveyLoading",false);
+            throw err;
+          })
+      },
       saveSurvey({ commit },survey){
-        delete survey.image_url;
+        // delete survey.image_url;
         let response;
         if(survey.id){
           response = axiosClient
@@ -181,6 +203,13 @@ const store = createStore({
         },
     },
     mutations: {
+        setCurrentSurveyLoading:(state,loading)=>{
+          state.currentSurvey.loading = loading;
+        },
+        setCurrentSurvey:(state,survey)=>{
+          state.currentSurvey.data = survey.data;
+          
+        },
         saveSurvey: (state,survey) =>{
           state.surveys = [...state.surveys, survey.data];
         },

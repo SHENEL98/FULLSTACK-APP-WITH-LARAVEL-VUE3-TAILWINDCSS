@@ -20,7 +20,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Image</label>
             <div class="mt-1 flex items-center">
-              <img v-if="model.image_url" :src="model.image_url" :alt="model.title" class="w-64 h-48 object-cover" />
+              <img v-if="model.image" :src="model.image" :alt="model.title" class="w-64 h-48 object-cover" />
               <span v-else class="flex items-center justify-center h-12 w-12 
                                       rounded-full overflow-hidden bg-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -183,7 +183,7 @@ import PageComponents from '../components/PageComponents.vue';
 import QuestionEditor from '../components/editor/QuestionEditor.vue';
 
 import { v4 as uuidv4 } from "uuid";
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import store from '../store';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -195,15 +195,28 @@ let model = ref({
   title: "",
   status: false,
   description: null,
-  image_url: null,
+  image: null,
   expire_date: null,
   questions: [],
 });
 
+//watch to current survey data change and when this happen when we update
+watch(
+  () => store.state.currentSurvey.data,
+  (newVal, oldVal) => {
+    model.value = {
+      ...JSON.parse(JSON.stringify(newVal)),
+      status: newVal.status !== "draft",
+    };
+  }
+);
 if (route.params.id) {
-  model.value = store.state.surveys.find(
-    (s) => s.id === parseInt(route.params.id)
-  );
+  // model.value = store.state.surveys.find(
+  //   (s) => s.id === parseInt(route.params.id)
+  // );
+  // console.log(model.value);
+  store.dispatch('getSurvey',route.params.id);
+
 }
 
 function onImageChoose(ev) {
@@ -215,7 +228,7 @@ function onImageChoose(ev) {
     model.value.image = reader.result;
 
     // The field to display here
-    model.value.image_url = reader.result;
+    model.value.image = reader.result;
     ev.target.value = '';
   }
   reader.readAsDataURL(model.value.imageFile)
@@ -230,7 +243,7 @@ function onImageChoose(ev) {
 //     //the field to send on backend and apply validations
 //     model.value.image = reader.result;
 //     //the firld to display here
-//     model.value.image_url = reader.imageFile;
+//     model.value.image = reader.imageFile;
 //   };
 //   // reader.readAsDataURL(file);
 //   reader.readAsDataURL(model.value.imageFile)
