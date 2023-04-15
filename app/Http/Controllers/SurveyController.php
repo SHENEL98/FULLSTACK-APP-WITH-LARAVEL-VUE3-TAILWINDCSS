@@ -109,6 +109,12 @@ class SurveyController extends Controller
         if($user->id !== $survey->user_id){
             return abort(code: 403, message: 'Unauthorized action');
         }
+        
+        //if there is an old image, delete it
+        if($survey->image){
+            $absolutePath = public_path($survey->image);
+            File::delete($absolutePath);
+        }
         $survey->delete();
         return response(content:'',status:204);
     }
