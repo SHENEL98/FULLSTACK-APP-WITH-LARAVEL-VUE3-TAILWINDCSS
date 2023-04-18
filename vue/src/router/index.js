@@ -6,10 +6,10 @@ import Register from '../views/Register.vue';
 import Surveys from '../views/Surveys.vue';
 import SurveyView from '../views/SurveyView.vue';
 import store from '../store';
-
 import DefaultLayout from '../components/DefaultLayout.vue';
 import AuthLayout from '../components/AuthLayout.vue';
 
+import SurveyPublicView from '../views/SurveyPublicView.vue';
 
 const routes =[
     {
@@ -50,11 +50,18 @@ const routes =[
         path: '/login',
         name: 'Login',
         component: Login
-    },{
+    },
+    {
         path: '/register',
         name: 'Register',
         component: Register
     },
+    {
+        path: '/view/survey/:slug',
+        name: 'SurveyPublicView',
+        component: SurveyPublicView
+    },
+
 ];
 
 const router = createRouter({
