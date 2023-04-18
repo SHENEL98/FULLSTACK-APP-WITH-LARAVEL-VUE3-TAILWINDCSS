@@ -1,7 +1,7 @@
 <template>
     <div class="
               flex flex-col py-4 px-6 shadow-md bg-white hover:bg-gray-50 h-[470px]">
-        <img v-if="survey.image" :src="survey.image" alt="" class="w-full h-48 object-cover" />
+        <img v-if="survey.image_url" :src="survey.image_url" alt="" class="w-full h-48 object-cover" />
         <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-full h-48 object-cover">
             <path stroke-linecap="round" stroke-linejoin="round"

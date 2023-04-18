@@ -18,14 +18,16 @@ class SurveyResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'image' => $this->image ? URL::to($this->image) : null,
+            'image_url' => $this->image ? URL::to($this->image) : null,
             'slug' => $this->slug,
             'status' => $this->status !== 'draft',
             'description' => $this->description,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'expire_date' => $this->expire_date,
-            'questions' => [],
+            // 'questions' => [],
+            'questions' => SurveyQuestionResource::collection($this->questions),
+
 
         ];
     }

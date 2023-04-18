@@ -10,6 +10,11 @@ use App\Http\Resources\SurveyResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+use App\Models\Survey\Question;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
+
 
 
 class SurveyController extends Controller
@@ -46,6 +51,12 @@ class SurveyController extends Controller
 
         }
         $result = Survey::create($data);
+
+        //create new questions
+        foreach($data['questions'] as $question){
+            $question['survey_id'] = $result->id;
+            $this->createQuestion($question);
+        }
 
         return new SurveyResource($result);
     }
@@ -94,6 +105,37 @@ class SurveyController extends Controller
         //update survey in the database
         $survey->update($data);
 
+        //get ids as plain array of already added questions / existing questions
+        $existingIds = $survey->questions()->pluck('id')->toArray();
+
+        //get ids as plain array of new questions
+        $newIds = Arr::pluck($data['questions'],'id');
+
+        //find questions to delete
+        $toDelete = array_diff($existingIds, $newIds);
+
+        //find questions to add
+        $toAdd = array_diff($newIds, $existingIds);
+
+        //delete questions by $toDelete array
+        Survey\Question::destroy($toDelete);
+
+        //create new questions
+        foreach($data['questions'] as $question){
+            if(in_array($question['id'], $toAdd)){
+                $question['survey_id'] = $survey->id;
+                $this->createQuestion($question);
+            }
+        }
+
+        //update existing questions
+        $questionMap = collect($data['questions'])->keyBy('id');
+        foreach($survey->questions as $question){
+            if(isset($questionMap[$question->id])){
+                $this->updateQuestion($question, $questionMap[$question->id]);
+            }
+        }
+
         return new SurveyResource($survey);
     }
 
@@ -120,14 +162,14 @@ class SurveyController extends Controller
     }
     private function saveImage($image)
     {
-        //check if image is valid base64 string
+        // Check if image is valid base64 string
         if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
-            //take out the base63 encoded text without mine type
+            // Take out the base64 encoded text without mime type
             $image = substr($image, strpos($image, ',') + 1);
-            //get file extension
+            // Get file extension
             $type = strtolower($type[1]); // jpg, png, gif
 
-            //check if file is on image
+            // Check if file is an image
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
                 throw new \Exception('invalid image type');
             }
@@ -151,5 +193,52 @@ class SurveyController extends Controller
         file_put_contents($relativePath, $image);
 
         return $relativePath;
+    }
+
+    private function createQuestion($question)
+    {
+        if(is_array($question['data'])){
+            $question['data'] = json_encode($question['data']);
+        }
+
+        $validator = Validator::make($question,[
+            'question' => 'required|string',
+            'type' => ['required',Rule::in([
+                Survey::TYPE_TEXT,
+                Survey::TYPE_TEXTAREA,
+                Survey::TYPE_SELECT,
+                Survey::TYPE_RADIO,
+                Survey::TYPE_CHECKBOX,
+            ])],
+            'description' => 'nullable|string',
+            'data' => 'present',
+            'survey_id' => 'exists:App\Models\Survey,id'
+        ]);
+
+        return Question::create($validator->validated());
+    }
+
+    private function updateQuestion(Survey\Question $question, $data)
+    {
+        if(is_array($data['data'])){
+            $data['data'] = json_encode($data['data']);
+        }
+
+        $validator = Validator::make($data,[
+            'id' => 'exists:App\Models\Survey\Question,id',
+            'question' => 'required|string',
+            'type' => ['required',Rule::in([
+                Survey::TYPE_TEXT,
+                Survey::TYPE_TEXTAREA,
+                Survey::TYPE_SELECT,
+                Survey::TYPE_RADIO,
+                Survey::TYPE_CHECKBOX,
+            ])],
+            'description' => 'nullable|string',
+            'data' => 'present',
+            'survey_id' => 'exists:App\Models\Survey,id'
+        ]);
+
+        return $question->update($validator->validated());
     }
 }

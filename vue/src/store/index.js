@@ -219,7 +219,9 @@ const store = createStore({
         surveys: {
             loading: false,
             data: {},
-        },
+        }, 
+        // surveys: [...tmpSurveys],
+
         currentSurvey: {
             loading: false,
             data: {},
@@ -244,7 +246,7 @@ const store = createStore({
                 });
         },
         saveSurvey({ commit }, survey) {
-            // delete survey.image_url;
+            delete survey.image_url;
             let response;
             if (survey.id) {
                 response = axiosClient

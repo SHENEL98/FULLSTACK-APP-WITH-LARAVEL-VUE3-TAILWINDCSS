@@ -34,11 +34,10 @@
     </template>
     <!-- test data passing -->
     <!-- <pre>{{ model }}</pre> -->
-    <!-- <pre>{{ model.questions.length }}</pre> -->
+    <!-- <pre>{{ model.questions.length }}</pre> --> 
 
     <div v-if="surveyLoading" class="flex justify-center">Loading...</div>
-
-    <form @submit.prevent="saveSurvey">
+    <form v-else @submit.prevent="saveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <!-- survey field -->
 
@@ -47,7 +46,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Image</label>
             <div class="mt-1 flex items-center">
-              <img v-if="model.image" :src="model.image" :alt="model.title" class="w-64 h-48 object-cover" />
+              <img v-if="model.image_url" :src="model.image_url" :alt="model.title" class="w-64 h-48 object-cover" />
               <span v-else class="flex items-center justify-center h-12 w-12 
                                         rounded-full overflow-hidden bg-gray-100">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -172,7 +171,9 @@
           You don't have any questions created yet.
         </div>
         <div v-for="(question, index) in model.questions" :key="question.id">
-          <QuestionEditor :question="question" :index="index" @change="questionChange" @addQuestion="addQuestion"
+          <QuestionEditor :question="question" :index="index" 
+            @change="questionChange"
+            @addQuestion="addQuestion"
             @deleteQuestion="deleteQuestion" />
         </div>
       </div>
@@ -226,6 +227,7 @@ let model = ref({
   status: false,
   description: null,
   image: null,
+  image_url: null,
   expire_date: null,
   questions: [],
 });
@@ -250,7 +252,8 @@ if (route.params.id) {
 }
 
 function onImageChoose(ev) {
-  model.value.imageFile = ev.target.files[0];
+  // model.value.imageFile = ev.target.files[0];
+  const file = ev.target.files[0];
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -258,26 +261,12 @@ function onImageChoose(ev) {
     model.value.image = reader.result;
 
     // The field to display here
-    model.value.image = reader.result;
+    model.value.image_url = reader.result;
     ev.target.value = '';
   }
-  reader.readAsDataURL(model.value.imageFile)
+  reader.readAsDataURL(file)
 }
-
-// function onImageChoose(ev){
-//   // const file = ev.target.files[0];
-//   model.value.imageFile = ev.target.files[0];
-
-//   const reader = new FileReader();
-//   render.onload = () =>{
-//     //the field to send on backend and apply validations
-//     model.value.image = reader.result;
-//     //the firld to display here
-//     model.value.image = reader.imageFile;
-//   };
-//   // reader.readAsDataURL(file);
-//   reader.readAsDataURL(model.value.imageFile)
-// }
+ 
 function addQuestion(index) {
   const newQuestion = {
     id: uuidv4(),
