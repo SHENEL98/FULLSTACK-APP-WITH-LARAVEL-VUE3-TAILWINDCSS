@@ -30,7 +30,9 @@ class SurveyController extends Controller
         $user = $request->user();
         // return Survey::where('user_id',$user->id)->paginate();
         //as we used SurveyResource, we can use it in here.
-        return SurveyResource::collection(Survey::where('user_id',$user->id)->paginate());
+        // return SurveyResource::collection(Survey::where('user_id',$user->id)->paginate(2));
+        return SurveyResource::collection(Survey::where('user_id', $user->id)->orderBy('created_at', 'DESC')->paginate(6));
+        
     }
 
     /**

@@ -9,8 +9,9 @@ const store = createStore({
     },
     surveys: {
       loading: false,
-      links: [],
-      data: []
+      data: [],
+      links: [] //this helps to pagination
+
     },
     currentSurvey: {
       data: {},
@@ -109,7 +110,7 @@ const store = createStore({
       state.surveys.loading = loading;
     },
     setSurveys: (state, surveys) => {
-      state.surveys.links = surveys.meta.links;
+      state.surveys.links = surveys.meta.links; //need for pagination
       state.surveys.data = surveys.data;
     },
     setCurrentSurveyLoading: (state, loading) => {
