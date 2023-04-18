@@ -15,7 +15,9 @@
       </div>
     </template>
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-      <SurveyListItem  v-for="survey in surveys" :key="survey.id"
+      <SurveyListItem  v-for="(survey, ind) in surveys" :key="survey.id"  
+      class="opacity-0 animate-fade-in-down"
+          :style="{ animationDelay: `${ind * 0.1}s` }"
        :survey="survey" @delete="deleteSurvey(survey)"/>
     </div>
   </PageComponent>
