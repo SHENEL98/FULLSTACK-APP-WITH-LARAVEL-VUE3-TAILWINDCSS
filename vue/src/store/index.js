@@ -7,6 +7,10 @@ const store = createStore({
       data: {},
       token: sessionStorage.getItem("TOKEN"),
     },
+    dashboard:{
+      data:{},
+      token: sessionStorage.getItem("TOKEN"),
+    },
     surveys: {
       loading: false,
       data: [],
@@ -117,6 +121,19 @@ const store = createStore({
       //   return res;
       // });
     },
+    getDashboardData({commit}) {
+      commit('dashboardLoading', true)
+      return axiosClient.get(`/dashboard`)
+      .then((res) => {
+        commit('dashboardLoading', false)
+        commit('setDashboardData', res.data)
+        return res;
+      })
+      .catch(error => {
+        commit('dashboardLoading', false)
+        return error;
+      })
+    },
   },
   mutations: {
     logout: (state) => {
@@ -149,6 +166,12 @@ const store = createStore({
       setTimeout(() => {
         state.notification.show = false;
       }, 3000)
+    },
+     dashboardLoading: (state, loading) => {
+      state.dashboard.loading = loading;
+    },
+    setDashboardData: (state, data) => {
+      state.dashboard.data = data
     },
   },
   modules: {},
