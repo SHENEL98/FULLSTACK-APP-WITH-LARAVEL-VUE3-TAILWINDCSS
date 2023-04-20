@@ -80,6 +80,11 @@ class SurveyController extends Controller
         
     }
 
+    public function showForGuest(Survey $survey)
+    {  
+        return new SurveyResource($survey);
+    }
+
     /**
      * Update the specified resource in storage.
      *
