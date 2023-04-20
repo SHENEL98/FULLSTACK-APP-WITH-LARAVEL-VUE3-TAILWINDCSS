@@ -1,6 +1,5 @@
 <template>
-    <div class="py-5 px-8">
-        <pre>{{ survey }}</pre>
+    <div class="py-5 px-8"> 
         <div v-if="loading" class="flex justify-center">Loading....</div>
         <form v-else @submit.prevent="submitSurvey" class="container mx-auto">
             <div class="grid grid-cols-6 items-center">
