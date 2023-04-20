@@ -27,10 +27,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout',[AuthController::class,'logout']);
 
     Route::resource('/survey',SurveyController::class);
+
+   
 });
 
 //showForGuest
 Route::get('/survey-by-slug/{survey:slug}',[SurveyController::class,'showForGuest']);
+
+ //save Survey_answer
+Route::post('/survey/{survey}/answer', [SurveyController::class, 'storeAnswer']);
+
+
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);

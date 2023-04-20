@@ -9,11 +9,17 @@ use Illuminate\Http\Request;
 use App\Http\Resources\SurveyResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-
 use App\Models\Survey\Question;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
+use App\Models\Survey\QuestionAnswer;
+use App\Models\Survey\Answer;
+
+
+use App\Http\Requests\StoreSurveyAnswerRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -45,6 +51,8 @@ class SurveyController extends Controller
     {
         $data = $request->validated();
 
+        // dd($data['user_id']);
+
         //check if image was uploaded and save on local folder
         if(isset($data['image'])){
             $relativePath = $this->saveImage($data['image']);
@@ -61,6 +69,43 @@ class SurveyController extends Controller
         }
 
         return new SurveyResource($result);
+    }
+
+    public function storeAnswer(StoreSurveyAnswerRequest $request, Survey $survey)
+    {
+        $validated = $request->validated();
+    
+        $surveyAnswer = Answer::create([
+            'survey_id' => $survey->id, 
+            'start_date' => date('Y-m-d H:i:s'),
+            'end_date' => date('Y-m-d H:i:s'),
+        ]);
+
+        foreach ($validated['answers'] as $questionId => $answer) {
+            $question = Question::where(['id' => $questionId, 'survey_id' => $survey->id])->get();
+            if (!$question) {
+                return response("Invalid question ID: \"$questionId\"", 400);
+            }
+
+            $data = [
+                'question_id' => $questionId,
+                'answer_id' => $surveyAnswer->id,
+                'answer' => is_array($answer) ? json_encode($answer) : $answer
+            ];
+
+            $questionAnswer = QuestionAnswer::create($data);
+        }
+        return response("", 201);
+
+    } 
+
+    private function userLogin(Request $request)
+    {
+        $user = $request->user();
+        $user_id = $user->id;
+
+        return $user_id ; 
+        
     }
 
     /**

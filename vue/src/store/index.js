@@ -108,6 +108,15 @@ const store = createStore({
           throw err;
         });
     },
+    saveSurveyAnswer({commit}, {surveyId, answers}) {
+      return axiosClient.post(`/survey/${surveyId}/answer`, {answers});
+      // let response;
+      // // response = axiosClient.post(`/survey/${surveyId}/answer`, answers);
+      // response = axiosClient.post(`/survey/${surveyId}/answer`, answers).then((res) => {
+      //   commit('setCurrentSurvey', res.data)
+      //   return res;
+      // });
+    },
   },
   mutations: {
     logout: (state) => {

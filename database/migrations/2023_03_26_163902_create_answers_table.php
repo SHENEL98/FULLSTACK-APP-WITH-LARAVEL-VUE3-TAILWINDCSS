@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('answers', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('answer');
+            $table->id();  
             $table->foreignId('survey_id')->constrained();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
