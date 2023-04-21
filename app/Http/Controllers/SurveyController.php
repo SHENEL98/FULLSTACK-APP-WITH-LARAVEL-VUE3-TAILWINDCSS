@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 use App\Http\Resources\SurveyResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use App\Models\Survey\Question;
+use App\Models\Question;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
-use App\Models\Survey\QuestionAnswer;
-use App\Models\Survey\Answer;
+use App\Models\QuestionAnswer;
+use App\Models\Answer;
 
 
 use App\Http\Requests\StoreSurveyAnswerRequest;
@@ -170,7 +170,7 @@ class SurveyController extends Controller
         $toAdd = array_diff($newIds, $existingIds);
 
         //delete questions by $toDelete array
-        Survey\Question::destroy($toDelete);
+        Question::destroy($toDelete);
 
         //create new questions
         foreach($data['questions'] as $question){
@@ -270,14 +270,14 @@ class SurveyController extends Controller
         return Question::create($validator->validated());
     }
 
-    private function updateQuestion(Survey\Question $question, $data)
+    private function updateQuestion(Question $question, $data)
     {
         if(is_array($data['data'])){
             $data['data'] = json_encode($data['data']);
         }
 
         $validator = Validator::make($data,[
-            'id' => 'exists:App\Models\Survey\Question,id',
+            'id' => 'exists:App\Models\Question,id',
             'question' => 'required|string',
             'type' => ['required',Rule::in([
                 Survey::TYPE_TEXT,

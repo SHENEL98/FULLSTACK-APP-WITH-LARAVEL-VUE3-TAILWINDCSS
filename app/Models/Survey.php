@@ -35,12 +35,12 @@ class Survey extends Model
 
     public function questions()
     {
-        return $this->hasMany(Survey\Question::class);
+        return $this->hasMany(Question::class);
     }
 
     //this need for implement data to dashboard
     public function answers()
     {
-        return $this->hasMany(Survey\Answer::class);
+        return $this->hasMany(Answer::class);
     }
 }

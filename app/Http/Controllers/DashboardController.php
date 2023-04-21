@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Survey\Answer;
+use App\Models\Answer;
 use App\Models\Survey;
 use App\Http\Resources\SurveyAnswerResource;
 use App\Http\Resources\SurveyResource;
@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $latest = Survey::query()->where('user_id', $user->id)->latest('created_at')->first();
 
         //total number of answers
-        $totalAnswers = Survey\Answer::query()
+        $totalAnswers = Answer::query()
             ->join('surveys', 'answers.survey_id', '=', 'surveys.id')
             ->where('surveys.user_id', $user->id)
             ->count();
