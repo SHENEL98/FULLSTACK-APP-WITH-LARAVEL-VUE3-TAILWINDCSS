@@ -11,7 +11,7 @@
         <div v-html="survey.description" class="overflow-hidden flex-1"></div>
         <div class="flex justify-between items-center mt-3">
             <router-link :to="{ name: 'SurveyView', params: { id: survey.id } }" class="
-                  flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-green-600 hover:ng-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500
+                  flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-blue-600 hover:ng-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                 ">Edit
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">

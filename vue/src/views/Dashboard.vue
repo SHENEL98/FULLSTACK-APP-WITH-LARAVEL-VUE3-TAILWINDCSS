@@ -39,7 +39,9 @@
         <h3 class="font-bold text-xl mb-3">{{ data.latestSurvey.title }}</h3>
         <div class="flex justify-between text-sm mb-1">
           <div>Upload Date:</div>
-          <div>{{ data.latestSurvey.created_at }}</div>
+          <div> 
+            {{ moment(data.latestSurvey.created_at).format("DD-MM-YYYY hh:mm") }}
+          </div>
         </div>
         <div class="flex justify-between text-sm mb-3">
           <div>Answers:</div>
@@ -48,7 +50,7 @@
         <div class="flex justify-between">
           <router-link
             :to="{ name: 'SurveyView', params: { id: data.latestSurvey.id } }"
-            class="flex py-2 px-4 border border-transparent text-sm rounded-md text-indigo-500 hover:bg-indigo-700 hover:text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="flex py-2 px-4 border border-transparent text-sm rounded-md text-blue-500 hover:bg-blue-700 hover:text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,6 +99,7 @@ import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import PageComponent from "../components/PageComponents.vue";
 import SurveyListItem from "../components/SurveyListItem.vue";
+import moment from "moment";
 
 const store = useStore();
 
@@ -104,6 +107,8 @@ const loading = computed(() => store.state.dashboard.loading);
 const data = computed(() => store.state.dashboard.data);
 
 store.dispatch("getDashboardData");
+
+
 </script>
 
 <style scoped></style>
